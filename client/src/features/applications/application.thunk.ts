@@ -37,7 +37,7 @@ export const fetchApplicationsRTK = createApi({
                 method: "POST",
                 body: applicationData,
             }),
-            invalidatesTags: ["Applications"],
+            invalidatesTags: (_, error) => (error ? [] : ["Applications"])
         })
     })
 });
