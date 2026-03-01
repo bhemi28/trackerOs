@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosClient from "../../services/axios.service";
-import type { IApplication, ICreateApplicationFormData } from "../../types/application.type";
+import type { IApplication, ICreateApplicationFormData, IGetAllFilteredApplicationsParams } from "../../types/application.type";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
@@ -27,9 +27,13 @@ export const fetchApplicationsRTK = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
     tagTypes: ["Applications"],
     endpoints: (builder) => ({
-        getApplications: builder.query<IApplication[], void>({
-            query: () => "application",
-            providesTags: ["Applications"],
+        getApplications: builder.query<{data: IApplication[], total: number}, IGetAllFilteredApplicationsParams>({
+            query: (query) => ({
+                url: "application",
+                params: query
+            }),
+            providesTags: (result) =>
+                result ? [...result.data.map(({ _id }) => ({ type: "Applications" as const, id: _id })), { type: "Applications", id: "LIST" }] : [{ type: "Applications", id: "LIST" }],
         }),
         createApplication: builder.mutation<IApplication, ICreateApplicationFormData>({
             query: (applicationData) => ({
@@ -37,7 +41,7 @@ export const fetchApplicationsRTK = createApi({
                 method: "POST",
                 body: applicationData,
             }),
-            invalidatesTags: (_, error) => (error ? [] : ["Applications"])
+            invalidatesTags: (_, error) => (error ? [] : [{ type: "Applications", id: "LIST" }]), // when a new application is created successfully, it will invalidate the "LIST" tag which will trigger a refetch of the applications list, ensuring that the UI is always up to date with the latest data.
         })
     })
 });

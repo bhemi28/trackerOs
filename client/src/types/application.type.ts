@@ -26,3 +26,10 @@ export interface ICreateApplicationFormData {
     jobURL: string;
     status: IApplicationStatus;
 }
+
+export interface IGetAllFilteredApplicationsParams {
+    status?: IApplicationStatus | 'all';
+    companyName?: string;
+    page?: number;
+    pageSize?: number;
+}

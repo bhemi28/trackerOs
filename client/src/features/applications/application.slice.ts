@@ -18,6 +18,10 @@ interface IApplicationsState {
 
     // application form:
     formData: ICreateApplicationFormData | null;
+
+    // pagination
+    page: number;
+    pageSize: number;
 }
 
 const initialApplicationState: IApplicationsState = {
@@ -29,6 +33,8 @@ const initialApplicationState: IApplicationsState = {
     filterStatus: 'all',
     view: 'grid',
     formData: null,
+    page: 1,
+    pageSize: 10,
 };
 
 // now creating a slice:
@@ -52,6 +58,11 @@ const applicationSlice = createSlice({
         setFilterStatus(state, action: PayloadAction<IApplicationStatus | 'all'>) {
             state.filterStatus = action.payload;
         },
+        // set pagination
+        setPagination(state, action: PayloadAction<{ page: number; pageSize: number }>) {
+            state.page = action.payload.page;
+            state.pageSize = action.payload.pageSize;
+        }
     },
     extraReducers: (builder) => {
         // the async thunks defined inside the application thunks file will be handled here, and we can update the state based on the pending, fulfilled, and rejected states of those thunks.
@@ -93,11 +104,13 @@ const applicationSlice = createSlice({
         selectIsFormOpen: (state) => state.isFormOpen,
         selectFilterStatus: (state) => state.filterStatus,
         selectView: (state) => state.view,
+        getPageNo: (state) => state.page,
+        getPageSize: (state) => state.pageSize,
     }
 });
 
-export const { toggleForm, toggleViewMode, setSearchQuery, setFilterStatus } = applicationSlice.actions;
+export const { toggleForm, toggleViewMode, setSearchQuery, setFilterStatus, setPagination } = applicationSlice.actions;
 
-export const { selectApplications, selectLoading, selectError, selectSearchQuery, selectIsFormOpen, selectFilterStatus, selectView } = applicationSlice.selectors;
+export const { selectApplications, selectLoading, selectError, selectSearchQuery, selectIsFormOpen, selectFilterStatus, selectView, getPageNo, getPageSize } = applicationSlice.selectors;
 
 export const applicationReducer = applicationSlice.reducer;
