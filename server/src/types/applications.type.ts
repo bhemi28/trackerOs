@@ -30,3 +30,10 @@ export interface ICreateApplicationDTO {
     jobURL: string;
     status: IApplicationStatus;
 }
+
+export interface IGetAllApplicationQueryDTO {
+    status?: IApplicationStatus;
+    companyName?: string;
+    page: number;
+    pageSize: number;
+}
