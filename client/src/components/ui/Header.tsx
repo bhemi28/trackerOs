@@ -1,4 +1,7 @@
-const Header = ({pageName}: {pageName: string}) => {
+import { useEffect } from "react";
+
+const Header = ({pageName, totalCount}: {pageName: string; totalCount: number}) => {
+
   return (
     <>
         <header className="h-14 bg-white border-b-2 border-[var(--border-color)] flex items-center justify-between px-8">
@@ -13,7 +16,7 @@ const Header = ({pageName}: {pageName: string}) => {
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-sm">database</span>
-                    <span>128_ENTRIES</span>
+                    <span>{totalCount}_ENTRIES</span>
                 </div>
                 <div className="bg-black text-white px-3 py-1">
                     14:42:01

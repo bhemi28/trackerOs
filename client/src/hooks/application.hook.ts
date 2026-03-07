@@ -54,7 +54,8 @@ export const useApplications = () => {
     };
 
     const handleFilterChange = (status: typeof filterStatus) => {
-        dispatch(setFilterStatus(status));
+        dispatch(setFilterStatus(status ? status : 'all'));
+        dispatch(setPagination({ page: 1, pageSize })); // reset to page 1 on filter change
     };
 
     // now we will handle the form submit using RTK mutation, so we will not need to dispatch any action here, as the mutation will handle the API call and update the cache automatically.
@@ -88,12 +89,15 @@ export const useApplications = () => {
 
     return {
         applications: applications?.data || [], // return an empty array if applications is undefined
+        total: applications?.total || 0, // return 0 if total is undefined
         isLoading,
         isLoadingRTK,
         errorRTK,
         error,
         view,
         searchQuery,
+        page,
+        pageSize,
         filterStatus,
         isFormOpen,
         handleToggleForm,

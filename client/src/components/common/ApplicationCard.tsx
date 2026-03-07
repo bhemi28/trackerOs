@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { IApplicationStatus } from "../../types/application.type";
+import { useNavigate } from "react-router";
 
 const cardColorMap: Record<number, string> = {
     0: "var(--pastel-pink)",
@@ -9,16 +10,19 @@ const cardColorMap: Record<number, string> = {
     4: "var(--pastel-yellow)",
 }
 
-const ApplicationCard = ({companyName, jobTitle, status}: {companyName: string; jobTitle: string; status: IApplicationStatus;}) => {
-    
+const ApplicationCard = ({companyName, jobTitle, status, id}: {companyName: string; jobTitle: string; status: IApplicationStatus; id: string;}) => {
+
     // useMemo to keep same color across re-renders
     const cardColor = useMemo(() => {
         const randomIndex = Math.floor(Math.random() * 5);
         return cardColorMap[randomIndex];
     }, []);
 
+    const navigate = useNavigate();
+
     return (
         <div
+            onClick={() => {navigate(`/applications/${id}`)}}
             style={{ backgroundColor: cardColor }}
             className={` p-4 retro-window retro-tile transition-all cursor-pointer flex flex-col h-48 w-64 retro-window retro-tile`}>
             <div className="flex justify-between items-start mb-2">

@@ -1,9 +1,10 @@
-import { useApplications } from "../hooks/application.hook";
-import type { IApplicationStatus } from "../types/application.type";
+import { useEffect } from "react";
+import { useApplications } from "../../hooks/application.hook";
+import type { IApplicationStatus } from "../../types/application.type";
 
 const SearchBar = () => {
 
-    const { handleDebouncedSearch, handleFilterChange } = useApplications();
+    const { handleDebouncedSearch, handleFilterChange, handleToggleForm } = useApplications();
 
     return (
         <div
@@ -28,6 +29,11 @@ const SearchBar = () => {
                 className="retro-window retro-tile p-2 text-black bg-[var(--pastel-search)] px-4 py-2 font-mono text-sm border-2 border-black active:translate-y-0.5 active:translate-x-0.5 transition-transform flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm">filter_list</span>
                 RUN_QUERY
+            </button>
+            <button
+                onClick={() => handleToggleForm()}
+                className="retro-window retro-tile p-2 cursor-pointer text-black bg-[var(--pastel-purple)] px-4 py-2 font-mono text-sm border-2 border-black active:translate-y-0.5 active:translate-x-0.5 transition-transform flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">add_box</span>
             </button>
         </div>
     )

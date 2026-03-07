@@ -1,4 +1,11 @@
+import { useEffect } from "react";
+
 const Footer = () => {
+
+    useEffect(() => {
+        console.log("Footer component rendered");
+    }, []);
+
     return (
         <>
             <footer
